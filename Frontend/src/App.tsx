@@ -36,7 +36,7 @@ export default function App() {
     if (!text || isLoading) return
     setInput('')
     try {
-      await sendMessage(text, messages)
+      await sendMessage(text)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
     }
@@ -64,7 +64,7 @@ export default function App() {
         messages={messages}
         onSuggestion={text => {
           setInput('')
-          sendMessage(text, messages).catch(err =>
+          sendMessage(text).catch(err =>
             setError(err instanceof Error ? err.message : 'Something went wrong')
           )
         }}

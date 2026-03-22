@@ -1,0 +1,54 @@
+services:
+  frontend:
+    build: ./Frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - functions
+
+  functions:
+    build: ./Functions/Home.Chat
+    ports:
+      - "7071:80"
+    environment:
+      - AzureWebJobsStorage=UseDevelopmentStorage=true
+      - AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+      - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
+      - SEQ_SERVER_URL=http://seq:5341
+      - SQLite__DatabasePath=/data/chat.db
+      - LLM__BaseUrl=http://ollama:11434
+      - LLM__Model=llama3.2
+    volumes:
+      - sqlite-data:/data
+    depends_on:
+      - azurite
+      - seq
+      - ollama
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    entrypoint: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull llama3.2 && wait"]
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+
+  seq:
+    image: datalust/seq:latest
+    ports:
+      - "5341:5341"
+      - "8081:80"
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_NOAUTHENTICATION=true
+
+volumes:
+  sqlite-data:
+  ollama-data:

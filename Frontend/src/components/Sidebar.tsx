@@ -62,7 +62,7 @@ export function Sidebar({ open, onClose, onSelect, onNewChat, activeId }: Sideba
               className={`sidebar-item ${c.id === activeId ? 'sidebar-item--active' : ''}`}
               onClick={() => { onSelect(c.id); onClose() }}
             >
-              <span className="sidebar-item-title">{c.title}</span>
+              <span className="sidebar-item-title">{c.message?.[0]?.text ?? c.id}</span>
               <span className="sidebar-item-date">{formatDate(c.updatedAt)}</span>
             </button>
           ))}
