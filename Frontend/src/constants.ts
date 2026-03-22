@@ -1,6 +1,7 @@
-export const CHAT_ENDPOINT          = '/api/chat'          // <Chat-endpoint>
-export const CONVERSATIONS_ENDPOINT = '/api/conversations'  // <conversations-endpoint>
-// individual conversation: GET /api/conversations/:id      <conversation/:id-endpoint>
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? ''
+
+export const CHAT_ENDPOINT          = `${API_BASE}/api/chat`
+export const CONVERSATIONS_ENDPOINT = `${API_BASE}/api/conversations`
 
 export const SUGGESTIONS = [
   'What do you work on?',
