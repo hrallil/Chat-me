@@ -26,4 +26,4 @@ SQLite__DatabasePath="$DATA_DIR/chat.db" \
 LLM__BaseUrl="http://localhost:11434" \
 LLM__Model="llama3.2" \
 SEQ_SERVER_URL="http://localhost:5341" \
-dotnet run
+func start
