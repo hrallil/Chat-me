@@ -3,7 +3,7 @@ services:
     build:
       context: ./Frontend
       args:
-        VITE_API_BASE_URL: https://api.mathias.it.com
+        VITE_API_BASE_URL: ""
     ports:
       - "3000:80"
     extra_hosts:
