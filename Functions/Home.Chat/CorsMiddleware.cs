@@ -11,9 +11,9 @@ public class CorsMiddleware : IFunctionsWorkerMiddleware
 
         if (httpContext != null)
         {
-            httpContext.Response.Headers.Append("Access-Control-Allow-Origin", "https://mathias.it.com");
-            httpContext.Response.Headers.Append("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            httpContext.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            httpContext.Response.Headers["Access-Control-Allow-Origin"] = "https://mathias.it.com";
+            httpContext.Response.Headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS";
+            httpContext.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization";
 
             if (httpContext.Request.Method == "OPTIONS")
             {
