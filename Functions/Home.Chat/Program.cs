@@ -25,6 +25,16 @@ var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.ConfigureFunctionsWebApplication();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("https://mathias.it.com")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddSerilog();
 
 builder.Services
@@ -57,6 +67,8 @@ builder.Services
     .AddSingleton<JsonSerializerOptions>(_ => new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 var app = builder.Build();
+
+app.UseCors();
 
 await app.Services.GetRequiredService<SqliteService>().InitializeAsync();
 
