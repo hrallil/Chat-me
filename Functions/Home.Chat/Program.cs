@@ -23,7 +23,10 @@ Log.Logger = new LoggerConfiguration()
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
-builder.ConfigureFunctionsWebApplication();
+builder.ConfigureFunctionsWebApplication(worker =>
+{
+    worker.UseCors();
+});
 
 builder.Services.AddCors(options =>
 {
@@ -67,8 +70,6 @@ builder.Services
     .AddSingleton<JsonSerializerOptions>(_ => new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 var app = builder.Build();
-
-app.UseCors();
 
 await app.Services.GetRequiredService<SqliteService>().InitializeAsync();
 
