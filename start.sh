@@ -15,7 +15,7 @@ trap cleanup SIGINT SIGTERM
 echo "Starting Docker services..."
 sudo docker compose up -d --remove-orphans
 
-export PATH=$PATH:$HOME/.dotnet
+export PATH=$PATH:/home/hrallil/.dotnet
 
 echo "Starting Azure Functions..."
 cd "$(dirname "$0")/Functions/Home.Chat"
