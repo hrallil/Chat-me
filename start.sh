@@ -16,6 +16,7 @@ echo "Starting Docker services..."
 sudo docker compose up -d --remove-orphans
 
 export PATH=$PATH:/home/hrallil/.dotnet
+export PATH=$PATH:$(npm bin -g 2>/dev/null || echo "/usr/local/bin")
 
 echo "Starting Azure Functions..."
 cd "$(dirname "$0")/Functions/Home.Chat"
