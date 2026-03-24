@@ -23,20 +23,9 @@ Log.Logger = new LoggerConfiguration()
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
-builder.ConfigureFunctionsWebApplication(worker =>
-{
-    worker.UseCors();
-});
+builder.ConfigureFunctionsWebApplication();
 
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.WithOrigins("https://mathias.it.com")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
+builder.UseMiddleware<Home.Chat.CorsMiddleware>();
 
 builder.Services.AddSerilog();
 
