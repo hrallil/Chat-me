@@ -6,27 +6,8 @@ services:
         VITE_API_BASE_URL: https://api.mathias.it.com
     ports:
       - "3000:80"
-    depends_on:
-      - functions
-
-  functions:
-    build: ./Functions/Home.Chat
-    ports:
-      - "7071:80"
-    environment:
-      - AzureWebJobsStorage=UseDevelopmentStorage=true
-      - AzureFunctionsJobHost__Logging__Console__IsEnabled=true
-      - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
-      - SEQ_SERVER_URL=http://seq:5341
-      - SQLite__DatabasePath=/data/chat.db
-      - LLM__BaseUrl=http://ollama:11434
-      - LLM__Model=llama3.2
-    volumes:
-      - sqlite-data:/data
-    depends_on:
-      - azurite
-      - seq
-      - ollama
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   ollama:
     image: ollama/ollama
