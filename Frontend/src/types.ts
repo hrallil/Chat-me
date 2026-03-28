@@ -6,8 +6,8 @@ export interface Message {
 }
 
 export interface BackendMessage {
-  id: string
-  conversationId: string
+  id: number
+  conversationId: number
   text: string | null
   sender: string | null
   createdAt: string
@@ -15,7 +15,7 @@ export interface BackendMessage {
 }
 
 export interface Conversation {
-  id: string
+  id: number
   message: BackendMessage[] | null
   createdAt: string
   updatedAt: string

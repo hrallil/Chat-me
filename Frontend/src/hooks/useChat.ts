@@ -8,7 +8,7 @@ function generateId() {
 
 function mapBackendMessages(messages: BackendMessage[]): Message[] {
   return messages.map(m => ({
-    id: m.id,
+    id: String(m.id),
     role: (m.sender === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
     content: m.text ?? '',
   }))
@@ -17,7 +17,7 @@ function mapBackendMessages(messages: BackendMessage[]): Message[] {
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [activeConversationId, setActiveConversationId] = useState<string | null>(null)
+  const [activeConversationId, setActiveConversationId] = useState<number | null>(null)
   const abortRef = useRef<AbortController | null>(null)
 
   const newChat = useCallback(() => {
@@ -27,14 +27,15 @@ export function useChat() {
     setActiveConversationId(null)
   }, [])
 
-  const loadConversation = useCallback(async (id: string) => {
+  const loadConversation = useCallback(async (id: number) => {
     abortRef.current?.abort()
     setMessages([])
     setIsLoading(true)
     try {
       const res = await fetch(`${CONVERSATIONS_ENDPOINT}/${id}`)
       if (!res.ok) throw new Error(`Server responded with ${res.status}`)
-      const data = await res.json()
+      const envelope = await res.json()
+      const data = envelope.data
       setMessages(mapBackendMessages(data.message ?? []))
       setActiveConversationId(id)
     } finally {
@@ -47,9 +48,6 @@ export function useChat() {
     if (!trimmed || isLoading) return
 
     setIsLoading(true)
-
-    const conversationId = activeConversationId ?? generateId()
-    if (!activeConversationId) setActiveConversationId(conversationId)
 
     const userMsg: Message = { id: generateId(), role: 'user', content: trimmed }
     const placeholderId = generateId()
@@ -65,13 +63,14 @@ export function useChat() {
       const response = await fetch(CHAT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: trimmed, conversationId }),
+        body: JSON.stringify({ message: trimmed, conversationId: activeConversationId }),
         signal: abortRef.current.signal,
       })
 
       if (!response.ok) throw new Error(`Server responded with ${response.status}`)
 
-      const data = await response.json()
+      const envelope = await response.json()
+      const data = envelope.data
       setMessages(mapBackendMessages(data.message ?? []))
       setActiveConversationId(data.id)
     } catch (err) {

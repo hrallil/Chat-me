@@ -7,9 +7,9 @@ import { CloseIcon, PlusIcon } from './Icons'
 interface SidebarProps {
   open: boolean
   onClose: () => void
-  onSelect: (id: string) => void
+  onSelect: (id: number) => void
   onNewChat: () => void
-  activeId: string | null
+  activeId: number | null
 }
 
 export function Sidebar({ open, onClose, onSelect, onNewChat, activeId }: SidebarProps) {
@@ -26,7 +26,7 @@ export function Sidebar({ open, onClose, onSelect, onNewChat, activeId }: Sideba
         if (!r.ok) throw new Error()
         return r.json()
       })
-      .then((data: Conversation[]) => setConversations(data))
+      .then((envelope: { data: Conversation[] }) => setConversations(envelope.data))
       .catch(() => setFetchError(true))
       .finally(() => setLoading(false))
   }, [open])
