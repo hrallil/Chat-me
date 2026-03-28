@@ -26,7 +26,7 @@ export function Sidebar({ open, onClose, onSelect, onNewChat, activeId }: Sideba
         if (!r.ok) throw new Error()
         return r.json()
       })
-      .then((envelope: { data: Conversation[] }) => setConversations(envelope.data))
+      .then((envelope: { data: Conversation[] }) => setConversations([...envelope.data].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())))
       .catch(() => setFetchError(true))
       .finally(() => setLoading(false))
   }, [open])
