@@ -3,6 +3,7 @@ import type { Conversation } from '../types'
 import { CONVERSATIONS_ENDPOINT } from '../constants'
 import { formatDate } from '../utils/format'
 import { CloseIcon, PlusIcon } from './Icons'
+import { getSessionId } from '../utils/session'
 
 interface SidebarProps {
   open: boolean
@@ -21,7 +22,7 @@ export function Sidebar({ open, onClose, onSelect, onNewChat, activeId }: Sideba
     if (!open) return
     setLoading(true)
     setFetchError(false)
-    fetch(CONVERSATIONS_ENDPOINT)
+    fetch(`${CONVERSATIONS_ENDPOINT}?sessionId=${getSessionId()}`)
       .then(r => {
         if (!r.ok) throw new Error()
         return r.json()

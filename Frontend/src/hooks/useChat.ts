@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
 import type { Message, BackendMessage } from '../types'
 import { CHAT_ENDPOINT, CONVERSATIONS_ENDPOINT } from '../constants'
+import { getSessionId } from '../utils/session'
 
 function generateId() {
   return Math.random().toString(36).slice(2)
@@ -63,7 +64,7 @@ export function useChat() {
       const response = await fetch(CHAT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: trimmed, conversationId: activeConversationId }),
+        body: JSON.stringify({ message: trimmed, conversationId: activeConversationId, sessionId: getSessionId() }),
         signal: abortRef.current.signal,
       })
 
