@@ -437,9 +437,8 @@ html, body, #root {
   box-sizing: border-box;
 }
 
-.messages-area::-webkit-scrollbar { width: 5px; }
-.messages-area::-webkit-scrollbar-track { background: transparent; }
-.messages-area::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 99px; }
+.messages-area::-webkit-scrollbar { display: none; }
+.messages-area { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* ── Welcome screen ──────────────────────────────────────────────────────── */
 .welcome {
@@ -633,7 +632,7 @@ html, body, #root {
 
 .markdown .chat-image {
   display: block;
-  max-width: 100%;
+  max-width: 40%;
   border-radius: 8px;
   margin: .6em 0;
 }
