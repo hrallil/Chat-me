@@ -1,5 +1,8 @@
+import { API_BASE } from '../constants'
+
 export function renderMarkdown(text: string): string {
   let html = text
+    .replace(/\[image:(\d+)\]/g, `<img src="${API_BASE}/image/$1" class="chat-image" alt="image $1" />`)
     .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
